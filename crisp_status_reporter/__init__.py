@@ -15,7 +15,7 @@ from threading import Thread
 
 REPORT_URL = "https://report.crisp.watch/v1"
 REPORT_ACCEPT = "application/json"
-REPORT_USERAGENT = "python-crisp-status-reporter/1.0.1"
+REPORT_USERAGENT = "python-crisp-status-reporter/1.0.2"
 REPORT_INITIAL_DELAY = 10
 REPORT_INTERVAL_DEFAULT = 30
 
@@ -141,14 +141,14 @@ class Reporter:
     # Report failed (default outcome)
     return False
 
-    def __log_debug(self, *args):
-      if self.__logger is not None:
-        self.__logger.debug(*args)
+  def __log_debug(self, *args):
+    if self.__logger is not None:
+      self.__logger.debug(*args)
 
-    def __log_warning(self, *args):
-      if self.__logger is not None:
-        self.__logger.warning(*args)
+  def __log_warning(self, *args):
+    if self.__logger is not None:
+      self.__logger.warning(*args)
 
-    def __log_error(self, *args):
-      if self.__logger is not None:
-        self.__logger.error(*args)
+  def __log_error(self, *args):
+    if self.__logger is not None:
+      self.__logger.error(*args)
