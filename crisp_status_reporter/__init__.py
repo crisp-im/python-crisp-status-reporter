@@ -17,17 +17,19 @@ REPORT_URL = "https://report.crisp.watch/v1"
 REPORT_ACCEPT = "application/json"
 REPORT_USERAGENT = "python-crisp-status-reporter/1.0.0"
 REPORT_INITIAL_DELAY = 10
-REPORT_INTERVAL = 60
+REPORT_INTERVAL_DEFAULT = 30
 
-class Status:
-  def __init__(self, token, service_id, node_id, replica_id, logger=None):
-    self.log = logger or None
-
-    # Read environment variables
+class Reporter:
+  def __init__(
+    self, token, service_id, node_id, replica_id, interval=None, logger=None
+  ):
+    # Read configuration
     self.__token = token or None
     self.__service_id = service_id or None
     self.__node_id = node_id or None
     self.__replica_id = replica_id or None
+    self.__interval = interval or REPORT_INTERVAL_DEFAULT
+    self.__logger = logger or None
 
     # Validate environment variables
     assert self.__token, "crisp status token is required"
@@ -90,14 +92,14 @@ class Status:
         self.__log_warning("(status) Reporter tick failed, will try again")
 
         # Try reporting again after half the interval (after failure)
-        time.sleep(REPORT_INTERVAL / 2)
+        time.sleep(self.__interval / 2)
 
         # Run reporter tick (2nd attempt, and last one)
         if self.__tick_reporter(2) == False:
           self.__log_error("(status) All reporter tick attempts failed")
 
       # Hold on before sending next report
-      time.sleep(REPORT_INTERVAL)
+      time.sleep(self.__interval)
 
       continue
 
@@ -107,7 +109,7 @@ class Status:
     # Build reporter data
     data = {
       "replica_id": self.__replica_id,
-      "interval": REPORT_INTERVAL
+      "interval": self.__interval
     }
 
     # Open reporter request
@@ -140,13 +142,13 @@ class Status:
     return False
 
     def __log_debug(self, *args):
-      if self.log is not None:
-        self.log.debug(*args)
+      if self.__logger is not None:
+        self.__logger.debug(*args)
 
     def __log_warning(self, *args):
-      if self.log is not None:
-        self.log.warning(*args)
+      if self.__logger is not None:
+        self.__logger.warning(*args)
 
     def __log_error(self, *args):
-      if self.log is not None:
-        self.log.error(*args)
+      if self.__logger is not None:
+        self.__logger.error(*args)

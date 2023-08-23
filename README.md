@@ -13,7 +13,18 @@ Crisp Status Reporter is used to actively submit health information to Crisp Sta
 `crisp-status-reporter` can be instantiated as such:
 
 ```python
-# TODO
+from crisp_status_reporter import Reporter
+import logging as logger
+
+# Build and run reporter
+Reporter(
+  token = "YOUR_TOKEN_SECRET",
+  service_id = "d657b4c1-dd07-4f94-ac7a-d4c3b4b219c1",
+  node_id = "5eca824b-4134-4126-982d-2c2338ecf3ab",
+  replica_id = "192.168.1.10",
+  interval = 60,
+  logger = logger
+)
 ```
 
 ## Where can I find my token?
