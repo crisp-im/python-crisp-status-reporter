@@ -112,16 +112,17 @@ class Reporter:
       "interval": self.__interval
     }
 
-    # Open reporter request
-    request = urllib.request.Request(
-      self.__report_url,
-
-      method="POST",
-      headers=self.__report_headers,
-      data=json.dumps(data).encode()
-    )
-
     try:
+      # Create reporter request
+      request = urllib.request.Request(
+        self.__report_url,
+
+        method="POST",
+        headers=self.__report_headers,
+        data=json.dumps(data).encode()
+      )
+
+      # Execute request
       with urllib.request.urlopen(request) as response:
         # Response is success?
         if response.status == 200:
@@ -136,7 +137,13 @@ class Reporter:
         )
 
     except urllib.error.HTTPError as error:
-      self.__log_warning("(status) Reporter request failure: %s", error)
+      self.__log_warning("(status) Reporter request HTTP failure: %s", error)
+
+    except Exception as error:
+      self.__log_error("(status) Reporter request error: %s", error)
+
+    except:
+      self.__log_error("(status) Reporter request fatal error")
 
     # Report failed (default outcome)
     return False
