@@ -15,7 +15,7 @@ from threading import Thread
 
 REPORT_URL = "https://report.crisp.watch/v1"
 REPORT_ACCEPT = "application/json"
-REPORT_USERAGENT = "python-crisp-status-reporter/1.0.2"
+REPORT_USERAGENT = "python-crisp-status-reporter/1.1.0"
 REPORT_INITIAL_DELAY = 10
 REPORT_INTERVAL_DEFAULT = 30
 
